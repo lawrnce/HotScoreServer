@@ -6,11 +6,11 @@ var connectionString = require(path.join(__dirname, '../', 'config'));
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Hot Score Server' });
 });
 
 // Get items by popularity
-router.get('/api/hotscore/:filter', function(req, res) {
+router.get('/:filter', function(req, res) {
 
   var results = [];
 
@@ -57,7 +57,7 @@ router.get('/api/hotscore/:filter', function(req, res) {
 });
 
 // Create item
-router.post('/api/hotscore', function(req, res) {
+router.post('/api', function(req, res) {
 
   // Get data
   var data = {title: req.body.title};
@@ -86,7 +86,7 @@ router.post('/api/hotscore', function(req, res) {
 });
 
 // Update Item
-router.put('/api/hotscore/:hotscore_id', function(req, res) {
+router.put('/api/:hotscore_id', function(req, res) {
 
   // Get data
   var id = req.params.hotscore_id;
@@ -114,10 +114,10 @@ router.put('/api/hotscore/:hotscore_id', function(req, res) {
 });
 
 // Delete
-router.delete('/api/v1/todos/:todo_id', function(req, res) {
+router.delete('/api/:hotscore_id', function(req, res) {
 
   // Get data
-  var id = req.params.todo_id;
+  var id = req.params.hotscore_id;
 
   // Connect to db
   pg.connect(connectionString, function(err, client, done) {
