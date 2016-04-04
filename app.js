@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var CronJob = require('cron').CronJob;
 var pg = require('pg');
-var connectionString = require(path.join(__dirname, '../', 'config'));
+var connectionString = require(path.join(__dirname, 'config'));
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -16,7 +16,29 @@ var app = express();
 // For demo purposes the score will be updated every second.
 // In production apps this should be less frequent.
 new CronJob('* * * * * *', function() {
-  var updateQuery = 'UPDATE items SET score = (hot_score(likes, date));';
+
+  // Connect to DB
+  pg.connect(connectionString, function(err, client, done) {
+
+    // Handle error
+    if (err) {
+      done();
+      console.log(err);
+      return;
+    }
+
+    var queryString = 'UPDATE items SET score = (hot_score(likes, date));';
+
+    // query db
+    var query = client.query(queryString);
+
+    // Emit end
+    query.on('end', function(row) {
+      done();
+      return;
+    });
+
+  });
 }, null, true, 'America/Los_Angeles');
 
 // view engine setup

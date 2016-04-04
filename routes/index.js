@@ -90,7 +90,7 @@ router.put('/api/hotscore/:hotscore_id', function(req, res) {
 
   // Get data
   var id = req.params.hotscore_id;
-  var data = {title: req.body.title, likes: req.body.likes}
+  var data = {likes: req.body.likes}
 
   // Conncet to db
   pg.connect(connectionString, function(err, client, done) {
@@ -102,7 +102,7 @@ router.put('/api/hotscore/:hotscore_id', function(req, res) {
     }
 
     // Update Data
-    client.query("UPDATE items SET title=($1), likes=($2) WHERE id=($3)", [data.title, data.likes, id], function(err, result){
+    client.query("UPDATE items SET likes=($1) WHERE id=($2)", [data.likes, id], function(err, result){
       if (err) {
         return res.status(500).json({success: false, data: err});
       } else {
