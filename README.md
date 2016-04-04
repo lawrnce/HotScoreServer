@@ -4,7 +4,7 @@ Hot Score Server ranks posts based on popularity with a time decay. The implemen
 
 ##Installation
 
-Install [Postgres](http://www.postgresql.org/download/) and create a database called 'hotscore'.
+Download or clone the repo. Install [Postgres](http://www.postgresql.org/download/) and create a database called 'hotscore'.
 
 ```SQL
 -- In the terminal, start psql and run
