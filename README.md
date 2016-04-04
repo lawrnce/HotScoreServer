@@ -1,6 +1,6 @@
 #Hot Score Server
 
-Hot Score Server ranks posts based on popularity with a time decay. The implementation is similar to [Hacker News](https://news.ycombinator.com). It is written in node.js with postgres as the database. For this demo, an internal cron function updates an item's score each second.
+Hot Score Server ranks posts based on popularity with a time decay. The implementation is similar to [Hacker News](https://news.ycombinator.com). It is written in node.js with postgres as the database. For this demo, an internal cron function updates each item's score each second.
 
 ##Installation
 
@@ -20,11 +20,11 @@ Return to the root directory and run.
 ```Node
 npm start
 ```
-Open localhost:3000 in your browser.
+Open http://localhost:3000 in your browser.
 
 ##Usage
 
-Hot Score Server is an api service. Use curl to interface it.
+Hot Score Server is a http service. Use curl to interface it.
 
 ####Create item
 ```
