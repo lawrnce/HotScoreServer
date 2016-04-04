@@ -4,11 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var CronJob = require('cron').CronJob;
+var pg = require('pg');
+var connectionString = require(path.join(__dirname, '../', 'config'));
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+// For demo purposes the score will be updated every second.
+// In production apps this should be less frequent.
+new CronJob('* * * * * *', function() {
+  var updateQuery = 'UPDATE items SET score = (hot_score(likes, date));';
+}, null, true, 'America/Los_Angeles');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
