@@ -10,9 +10,12 @@ router.get('/', function(req, res, next) {
 });
 
 // Get items by popularity
-router.get('/api/hotscore', function(req, res) {
+router.get('/api/hotscore/:filter', function(req, res) {
 
   var results = [];
+
+  // Get filter type
+  var id = req.params.filter;
 
   // Connect to db
   pg.connect(connectionString, function(err, client, done) {
@@ -23,8 +26,22 @@ router.get('/api/hotscore', function(req, res) {
       return res.status(500).json({success: false, data: err});
     }
 
+    // Deterime filter
+    var queryString;
+    if (id == 'popular') {
+
+      queryString = 'SELECT id, title, likes, date, score FROM items ORDER BY score DESC;';
+
+    } else if (id == 'recent') {
+
+      queryString = 'SELECT id, title, likes, date, score FROM items ORDER BY id DESC;';
+
+    } else {
+      return res.status(404).json({success: false, message: 'not found'});
+    }
+
     // query db
-    var query = client.query('SELECT array_to_json(array_agg(row_to_json(d))) FROM ( SELECT id, title FROM items ORDER BY score DESC)d');
+    var query = client.query(queryString);
 
     // Emit row
     query.on('row', function(row) {
@@ -44,6 +61,7 @@ router.post('/api/hotscore', function(req, res) {
 
   // Get data
   var data = {title: req.body.title};
+  var date = parseInt(new Date().getTime() / 1000);
 
   // Connect to db
   pg.connect(connectionString, function(err, client, done) {
@@ -56,7 +74,7 @@ router.post('/api/hotscore', function(req, res) {
     }
 
     // Insert Data
-    client.query("INSERT INTO items(title, age, likes, score) values($1, 1, 0, 0)", [data.title], function(err, result) {
+    client.query("INSERT INTO items(title, date, likes, score) values($1, $2, 0, 0)", [data.title, date], function(err, result) {
       if (err) {
         return res.status(500).json({success: false, data: err});
       } else {
@@ -72,7 +90,7 @@ router.put('/api/hotscore/:hotscore_id', function(req, res) {
 
   // Get data
   var id = req.params.hotscore_id;
-  var data = {title: req.body.title, likes: req.body.likes, age: req.body.age}
+  var data = {title: req.body.title, likes: req.body.likes}
 
   // Conncet to db
   pg.connect(connectionString, function(err, client, done) {
@@ -84,7 +102,7 @@ router.put('/api/hotscore/:hotscore_id', function(req, res) {
     }
 
     // Update Data
-    client.query("UPDATE items SET title=($1), likes=($2), age=($3) WHERE id=($4)", [data.title, data.likes, data.age, id], function(err, result){
+    client.query("UPDATE items SET title=($1), likes=($2) WHERE id=($3)", [data.title, data.likes, id], function(err, result){
       if (err) {
         return res.status(500).json({success: false, data: err});
       } else {
@@ -115,7 +133,7 @@ router.delete('/api/v1/todos/:todo_id', function(req, res) {
       if (err) {
         return res.status(500).json({success: false, data: err});
       } else  {
-        return res.status(200).json(success: true);
+        return res.status(200).json({success: true});
       }
     });
 
