@@ -38,7 +38,7 @@ curl -X PUT --data "likes=4" http://localhost:3000/api/:item_id
 
 ####Delete item
 ```
-curl -X DELETE http://localhost:3000/api//:item_id
+curl -X DELETE http://localhost:3000/api/:item_id
 ```
 
 ##View Data
@@ -49,4 +49,4 @@ curl -X DELETE http://localhost:3000/api//:item_id
 Lawrence Tran
 
 ##License
-See LICENSE
+GPL
