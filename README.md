@@ -10,13 +10,13 @@ Install [Postgres](http://www.postgresql.org/download/) and create a database ca
 -- In the terminal, start psql and run
 CREATE DATABASE hotscore
 ```
-Run the database setup script. cd to the models directory and run
+Make sure PostgreSQL is running on port 5432. Run the database setup script in the '/models' directory.
 
 ```Node
 node database.js
 ```
 
-Return to the root directory and start
+Return to the root directory and run.
 ```Node
 npm start
 ```
