@@ -1,5 +1,10 @@
 #Hot Score Server
 
+<p align="center">
+<img src="/assets/preview.gif" />
+</p>
+
+
 Hot Score Server ranks posts based on popularity with a time decay. The implementation is similar to [Hacker News](https://news.ycombinator.com). It is written in node.js with postgres as the database. For this demo, an internal cron function updates each item's score each second.
 
 ##Installation
